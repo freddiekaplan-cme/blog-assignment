@@ -19,7 +19,11 @@ const mockData = [
   },
 ];
 
+
+// swr
+
 export default function Blog() {
+  
   return (
     <section>
       <Heading>Blog</Heading>
