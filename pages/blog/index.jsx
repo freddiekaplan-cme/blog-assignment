@@ -2,6 +2,12 @@ import Link from "next/link";
 import styles from "./blog.module.css";
 import Heading from "@components/heading";
 
+import useSWR from "swr";
+import useSWRMutation from "swr/mutation";
+
+import { getBlogData } from "../api";
+
+
 const mockData = [
   {
     id: "123",
@@ -19,15 +25,52 @@ const mockData = [
   },
 ];
 
-
 // swr
 
+// export const cacheKey = "blogData";
+
+// export default function blog() {
+  // const {
+  //   data: { data = [] } = {},
+  //   error,
+  //   mutate,
+  //   isLoading,
+  // } = useSWR(cacheKey, getBlogData);
+
+//   const { trigger: addTrigger, isMutating } = useSWRMutation(cacheKey, addCharacter, {
+//     onError: () => {
+//       setToaster({
+//         message: "An error occurred while adding a character.",
+//       });
+//     },
+//   });
+// }
+const cacheKey = "blogData";
+
 export default function Blog() {
+  const {
+    data: { data = [] } = {},
+    error,
+    mutate,
+    isLoading,
+  } = useSWR(cacheKey, getBlogData);
+
+  //Gör om errors
+  if (error) {
+    return <div>Error loading blog data</div>;
+  }
+
+  if (!data) {
+    return <div>Loading blog data...</div>;
+  }
+
   
+
+
   return (
     <section>
       <Heading>Blog</Heading>
-      {mockData.map((post) => (
+      {data.map((post) => (
         <Link
           key={post.slug}
           className={styles.link}
@@ -35,7 +78,7 @@ export default function Blog() {
         >
           <div className="w-full flex flex-col">
             <p>{post.title}</p>
-            <time className={styles.date}>{post.createdAt}</time>
+            <time className={styles.date}>{post.createdAt.slice(0,10) + " " + post.createdAt.slice(11,16)}</time>
           </div>
         </Link>
       ))}
