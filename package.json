@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.23.0",
+    "@supabase/supabase-js": "^2.24.0",
     "@tiptap/extension-bold": "^2.0.3",
     "@tiptap/extension-code": "^2.0.3",
     "@tiptap/extension-history": "^2.0.3",
