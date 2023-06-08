@@ -3,7 +3,7 @@ import styles from "./blog.module.css";
 import Heading from "@components/heading";
 
 import useSWR from "swr";
-import useSWRMutation from "swr/mutation";
+// import useSWRMutation from "swr/mutation";
 
 import { getBlogData } from "../api";
 
@@ -50,9 +50,9 @@ const cacheKey = "blogData";
 export default function Blog() {
   const {
     data: { data = [] } = {},
-    error,
-    mutate,
-    isLoading,
+    error
+    // mutate,
+    // isLoading,
   } = useSWR(cacheKey, getBlogData);
 
   //Gör om errors
@@ -63,9 +63,6 @@ export default function Blog() {
   if (!data) {
     return <div>Loading blog data...</div>;
   }
-
-  
-
 
   return (
     <section>

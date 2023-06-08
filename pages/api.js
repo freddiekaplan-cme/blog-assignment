@@ -15,3 +15,23 @@ export async function getBlogData() {
 	  console.log(error);
 	}
   };
+
+export async function getBlogPost({ slug }) {
+	try {
+	  const { data, error, status } = await supabase
+		.from("blog-data")
+		.select("*")
+		.eq("slug", slug)
+		.single();
+  
+		console.log(slug);
+
+	  if (error) {
+		return { error: 'Something has gone wrong.' };
+	  }
+  
+	  return { data, status, error };
+	} catch (error) {
+	  console.log(error);
+	}
+  };
