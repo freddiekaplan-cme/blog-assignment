@@ -12,15 +12,10 @@ export const addPost = async ({ editorContent, titleInput, image, newPostSlug })
       {
         title: titleInput,
         slug: newPostSlug,
-        // created_at: timestamptz,
         body: editorContent
       }
     )
-		// .eq("slug", slug)
-		// .single();
   
-		console.log("addPost", titleInput, newPostSlug, editorContent);
-
 	  if (error) {
 		return { error: 'Something has gone wrong.' };
 	  }
@@ -31,8 +26,14 @@ export const addPost = async ({ editorContent, titleInput, image, newPostSlug })
 	}
 };
 
-export const removePost = () => {
-  //Handle remove post here
+export const removePost = async (id) => {
+  const { error, status } = await supabase
+  .from("blog-data")
+  .delete()
+  .single()
+  .eq("id", id);
+  
+  return { error, status };
 };
 
 export const editPost = () => {

@@ -10,6 +10,7 @@ import useSWR from "swr";
 // import useSWRMutation from "swr/mutation";
 
 import { getBlogPost } from "../../api";
+import { removePost } from "../../../api-routes/posts";
 
 // const post = {
 //   id: "1234",
@@ -73,7 +74,9 @@ export default function BlogPost() {
   console.log(data);
 
   const handleDeletePost = () => {
-    console.log({ id: post.id });
+    const id = post.id;
+    removePost(id);
+    return router.push(`/blog/`);
   };
 
   const handleEditPost = () => {
