@@ -32,10 +32,25 @@ export const removePost = async (id) => {
   .delete()
   .single()
   .eq("id", id);
-  
+
   return { error, status };
 };
 
-export const editPost = () => {
-  //Handle edit post here
+export const editPost = async ({ editorContent, titleInput, image, slug }) => {
+  const { data, error, status } = await supabase
+  .from("blog-data")
+  .update(
+    {
+      title: titleInput,
+      body: editorContent
+    }
+  )
+  .select()
+  .eq("slug", slug)
+
+  if (error) {
+    return { error, data, status };
+  }
+
+  return { data, status, error };
 };
