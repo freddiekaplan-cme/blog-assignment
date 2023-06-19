@@ -19,6 +19,64 @@ export const getPost = async ({ slug }) => {
   return { error, status, data }; 
 }
 
+// let getLatestUserId = "";
+
+// export const latestPost = async () => {
+//   const { data, error, status } = await supabase
+//   .from("blog-data")
+//   .select('*')
+//   .order('createdAt', { ascending: false })
+//   .limit(1);
+
+//   getLatestUserId = data[0].id;
+//   console.log("latest post", getLatestUserId)
+
+//   return { error, status, data }; 
+// }
+
+export const latestPost = async () => {
+  try {
+    const { data: posts, error, status } = await supabase
+      .from("blog-data")
+      .select('*')
+      .order('createdAt', { ascending: false })
+      .limit(1);
+
+    if (posts && posts.length > 0) {
+      const latestPost = posts[0];
+      const userId = latestPost.user_id;
+
+      const { data: userData, error: userError, status: userStatus } = await supabase
+        .from("users")
+        .select('email')
+        .single()
+        .eq("id", userId);
+
+      if (userData) {
+        const { email } = await userData;
+        return { error, status, data: { post: latestPost, userId, email } };
+      }
+    }
+
+    return { error, status, data: null };
+  } catch (error) {
+    return { error: error.message, status: 500, data: null };
+  }
+};
+
+
+// export const latestPostUser = async () => {
+//   const { data, error, status } = await supabase
+//   .from("users")
+//   .select('*')
+//   .single()
+//   .eq("id", getLatestUserId)
+
+//   console.log("latestPostUser: ", data)
+
+//   return { error, status, data }; 
+// }
+
 export const addPost = async (_, { arg: newPost }) => {
   let image = ""
 
@@ -29,36 +87,13 @@ export const addPost = async (_, { arg: newPost }) => {
       image = publicUrl
     }
   }
-    // create function that take sin th uploaded image from the client
-    // upload it to bucket
-    // get the public filename
 
-  // TEMP UTKOMMENTERAT:
-  // try {
 	  const { data, error, status } = await supabase
       .from("blog-data")
       .insert({...newPost, image})
       .select()
       .single()
     return  { data, error, status }
-
-      // {
-      //   title: titleInput,
-      //   slug: newPostSlug,
-      //   body: editorContent,
-      //   user_id: user_id,
-      // }
-    
-
-  
-	//   if (error) {
-	// 	return { error: 'Something has gone wrong.' };
-	//   }
-  
-	//   return { data, status, error };
-	// } catch (error) {
-	//   console.log(error);
-	// }
 };
 
 export const removePost = async (_, { arg: id  }) => {
@@ -106,10 +141,7 @@ export const editPost = async (_, {arg: updatedPost}) => {
     .eq("id", updatedPost.id)
     .select()
     .single();
-    // .eq("slug", slug);
-
-  console.log(updatedPost.title);
-
+  
   if (error) {
     return { error, data, status };
   }

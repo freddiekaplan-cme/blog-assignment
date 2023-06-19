@@ -5,7 +5,7 @@ import useSWRMutation from "swr/mutation";
 import { getPost, editPost } from "../../../../api-routes/posts";
 import {createSlug} from "../../../../utils/createSlug"
 import { createPagesServerClient } from "@supabase/auth-helpers-nextjs";
-import { uploadImage } from "../../../../utils/uploadImage";
+// import { uploadImage } from "../../../../utils/uploadImage";
 
 const editPostsCacheKey = "/editpost"
 
