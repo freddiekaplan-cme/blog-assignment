@@ -1,11 +1,24 @@
 import { supabase } from "@/lib/supabaseClient";
 import { uploadImage } from "../utils/uploadImage";
 
-export const getPosts = () => {
-  //Handle get all posts
+export const getPosts = async () => {
+  const { data, error, status } = await supabase
+  .from("blog-data")
+  .select('*')
+
+  return { error, status, data  }
 };
 
-//_, { arg: newPost }
+export const getPost = async ({ slug }) => {
+  const { data, error, status } = await supabase
+  .from("blog-data")
+  .select('*')
+  .single()
+  .eq("slug", slug );
+
+  return { error, status, data }; 
+}
+
 export const addPost = async (_, { arg: newPost }) => {
   let image = ""
 
@@ -24,7 +37,7 @@ export const addPost = async (_, { arg: newPost }) => {
   // try {
 	  const { data, error, status } = await supabase
       .from("blog-data")
-      .insert(...newPost, image)
+      .insert({...newPost, image})
       .select()
       .single()
     return  { data, error, status }
@@ -48,14 +61,14 @@ export const addPost = async (_, { arg: newPost }) => {
 	// }
 };
 
-export const removePost = async (id) => {
+export const removePost = async (_, { arg: id  }) => {
   const { error, status } = await supabase
   .from("blog-data")
   .delete()
   .single()
   .eq("id", id);
 
-  return { error, status };
+  return { error, status, data };
 };
 
 // export const editPost = async ({ _, arg: updatedPost }) => {
@@ -74,23 +87,22 @@ export const removePost = async (id) => {
 //   return { data, status, error };
 // };
 
-export const editPost = async ({ _, arg: updatedPost, slug }) => {
+export const editPost = async (_, {arg: updatedPost}) => {
   let image  = updatedPost?.image ?? "";
 
   const isNewImage = typeof image === "object" && image !== null;
 
   if (isNewImage) {
-    const { publicUrl, error } = await uploadImage(newPost?.image)
-  }
+    const { publicUrl, error } = await uploadImage(updatedPost?.image)
 
-  if (!error) {
-    image = publicUrl;
+    if (!error) {
+      image = publicUrl;
+    }
   }
-
 
   const { data, error, status } = await supabase
     .from("blog-data")
-    .update(...updatedPost, image)
+    .update({...updatedPost, image})
     .eq("id", updatedPost.id)
     .select()
     .single();

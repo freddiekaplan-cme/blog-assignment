@@ -1,11 +1,11 @@
 import Link from "next/link";
 import styles from "./blog.module.css";
 import Heading from "@components/heading";
-
 import useSWR from "swr";
 // import useSWRMutation from "swr/mutation";
 
-import { getBlogData } from "../api";
+import { getPost, getPosts } from "../../api-routes/posts";
+// import { getBlogData } from "../api";
 
 
 const mockData = [
@@ -45,7 +45,7 @@ const mockData = [
 //     },
 //   });
 // }
-const cacheKey = "blogData";
+export const cacheKey = "/post"
 
 export default function Blog() {
   const {
@@ -53,7 +53,7 @@ export default function Blog() {
     error
     // mutate,
     // isLoading,
-  } = useSWR(cacheKey, getBlogData);
+  } = useSWR(cacheKey, getPosts);
 
   //Gör om errors
   if (error) {

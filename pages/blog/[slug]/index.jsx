@@ -8,8 +8,7 @@ import BlogImageBanner from "@components/blog-image-banner";
 
 import useSWR from "swr";
 
-import { getBlogPost } from "../../api";
-import { removePost } from "../../../api-routes/posts";
+import { getPost, removePost } from "../../../api-routes/posts";
 
 const cacheKey = "blogPost";
 // const cacheKey = `blogPost:${slug}`;
@@ -19,7 +18,7 @@ export default function BlogPost() {
   const { slug } = router.query;
 
   const { data, error } = useSWR(slug ? cacheKey : null, () => 
-    getBlogPost({ slug })
+    getPost({ slug })
   );
 
   //Gör om errors
