@@ -7,7 +7,6 @@ import Heading from "@components/heading";
 import BlogImageBanner from "@components/blog-image-banner";
 
 import useSWR from "swr";
-// import useSWRMutation from "swr/mutation";
 
 import { getBlogPost } from "../../api";
 import { removePost } from "../../../api-routes/posts";
@@ -33,9 +32,6 @@ export default function BlogPost() {
   }
 
   const post = data.data;
-
-  console.log(post);
-  console.log(data);
 
   const handleDeletePost = () => {
     const id = post.id;
