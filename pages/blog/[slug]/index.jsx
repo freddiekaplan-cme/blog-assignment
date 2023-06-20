@@ -21,7 +21,6 @@ export default function BlogPost() {
     getPost({ slug })
   );
 
-  //Gör om errors
   if (error) {
     return <div>Error loading blog data</div>;
   }

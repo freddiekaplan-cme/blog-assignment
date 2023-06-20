@@ -19,21 +19,6 @@ export const getPost = async ({ slug }) => {
   return { error, status, data }; 
 }
 
-// let getLatestUserId = "";
-
-// export const latestPost = async () => {
-//   const { data, error, status } = await supabase
-//   .from("blog-data")
-//   .select('*')
-//   .order('createdAt', { ascending: false })
-//   .limit(1);
-
-//   getLatestUserId = data[0].id;
-//   console.log("latest post", getLatestUserId)
-
-//   return { error, status, data }; 
-// }
-
 export const latestPost = async () => {
   try {
     const { data: posts, error, status } = await supabase
@@ -64,19 +49,6 @@ export const latestPost = async () => {
   }
 };
 
-
-// export const latestPostUser = async () => {
-//   const { data, error, status } = await supabase
-//   .from("users")
-//   .select('*')
-//   .single()
-//   .eq("id", getLatestUserId)
-
-//   console.log("latestPostUser: ", data)
-
-//   return { error, status, data }; 
-// }
-
 export const addPost = async (_, { arg: newPost }) => {
   let image = ""
 
@@ -105,22 +77,6 @@ export const removePost = async (_, { arg: id  }) => {
 
   return { error, status, data };
 };
-
-// export const editPost = async ({ _, arg: updatedPost }) => {
-//   const { data, error, status } = await supabase
-//   .from("blog-data")
-//   .update(updatedPost)
-//   .select()
-//   .eq("slug", slug)
-
-//     console.log(titleInput)
-
-//   if (error) {
-//     return { error, data, status };
-//   }
-
-//   return { data, status, error };
-// };
 
 export const editPost = async (_, {arg: updatedPost}) => {
   let image  = updatedPost?.image ?? "";

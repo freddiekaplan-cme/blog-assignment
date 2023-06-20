@@ -1,9 +1,12 @@
 import Button from "@components/button";
 import styles from "./comment.module.css";
+import { removeComment } from "../../../../../api-routes/comments";
+import { commentCacheKey } from '@/api-routes/comments'
+
 
 export default function Comment({ comment, createdAt, author, id }) {
   const handleDelete = () => {
-    console.log({ id });
+    removeComment(commentCacheKey, id);
   };
   return (
     <div className={styles.container}>
