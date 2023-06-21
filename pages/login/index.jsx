@@ -9,31 +9,6 @@ const LoginPage = () => {
   const user = useUser();
   const router = useRouter();
 
-  //   useEffect(() => {
-  //     if (user)
-  //       router.push("/");
-  //     }
-  //   }, [user, router]);
-
-  //   return (
-  //     <Auth
-  //       redirectTo="http://localhost:3000/"
-  //       appearance={{ theme: ThemeSupa }}
-  //       supabaseClient={supabaseClient}
-  //       providers={[]}
-  //       socialLayout="horizontal"
-  //     />
-  //   );
-
-  //   return (
-  //     <>
-  //       <button onClick={() => supabaseClient.auth.signOut()}>Sign out</button>
-  //       <p>user:</p>
-  //       <pre>{JSON.stringify(user, null, 2)}</pre>
-  //     </>
-  //   )
-  // }
-
   useEffect(() => {
     if (user) {
       router.push("/");
