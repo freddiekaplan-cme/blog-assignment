@@ -6,8 +6,8 @@ import { commentCacheKey } from '@/api-routes/comments'
 export default function Comment({ comment, createdAt, author, id }) {
   const handleDelete = () => {
     removeComment(commentCacheKey, id);
-    console.log("removeComment " + id);
   };
+  
   return (
     <div className={styles.container}>
       <p>{comment}</p>
