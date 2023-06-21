@@ -13,7 +13,7 @@ interface PostData {
 }
 
 export default function Home() {
-  const { data, error } = useSWR(cacheKey, latestPost);
+  const { data, error } = useSWR(`${cacheKey}/latest`, latestPost);
 
   if (error) {
     return <div>Error loading blog data</div>;
@@ -31,7 +31,7 @@ export default function Home() {
 
   return (
     <section>
-      <Heading>Newest Blog Post</Heading>
+      <Heading>Latest Blog Post</Heading>
       <SubHeading>{latestPostData.title}</SubHeading>
       {latestPostData?.image && <BlogImageBanner src={latestPostData.image} alt={latestPostData.title} />}
       <div className={styles.dateContainer}>

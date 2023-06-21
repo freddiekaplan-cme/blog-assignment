@@ -68,14 +68,14 @@ export const addPost = async (_, { arg: newPost }) => {
     return  { data, error, status }
 };
 
-export const removePost = async (_, { arg: id  }) => {
+export const removePost = async (_, { arg: id }) => {
   const { error, status } = await supabase
   .from("blog-data")
   .delete()
   .single()
   .eq("id", id);
 
-  return { error, status, data };
+  return { error, status };
 };
 
 export const editPost = async (_, {arg: updatedPost}) => {

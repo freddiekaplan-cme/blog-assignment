@@ -7,9 +7,8 @@ import { getPosts } from "../../api-routes/posts";
 export const cacheKey = "/post";
 
 export default function Blog() {
-  const { data, error } = useSWR(cacheKey, getPosts);
-  const isLoading = !data && !error;
-
+  const { data: { data = [] } = {}, error, isLoading } = useSWR(cacheKey, getPosts);
+  
   if (error) {
     return <div>Error loading blog data</div>;
   }
@@ -21,7 +20,7 @@ export default function Blog() {
   return (
     <section>
       <Heading>Blog</Heading>
-      {data.data.map((post) => (
+      {data.map((post) => (
         <Link
           key={post.slug}
           className={styles.link}

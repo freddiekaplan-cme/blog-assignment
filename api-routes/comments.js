@@ -18,7 +18,7 @@ export const getComments = async (postId) => {
 	const { data, error, status } = await supabase
 	.from('comments')
 	.insert(newComment)
-	.eq("post_id", newComment.postId)
+	.eq("post_id", newComment)
 	.single()
 	.select()
 	 return { data, error, status};

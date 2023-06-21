@@ -6,32 +6,31 @@ import Button from "@components/button";
 import Heading from "@components/heading";
 import BlogImageBanner from "@components/blog-image-banner";
 import useSWR from "swr";
+import useSWRMutation from "swr/mutation";
 import { getPost, removePost } from "../../../api-routes/posts";
-
-const cacheKey = "blogPost";
-// const cacheKey = `blogPost:${slug}`;
 
 export default function BlogPost() {
   const router = useRouter();
   const { slug } = router.query;
+  const postCacheKey = "/post"
 
-  const { data, error } = useSWR(slug ? cacheKey : null, () => 
-    getPost({ slug })
-  );
+  const {data: { data: post = {} } = {}, error } = useSWR(slug ? `${postCacheKey}${slug}` : null, () =>
+   getPost({ slug }));
 
   if (error) {
     return <div>Error loading blog data</div>;
   }
 
-  if (!data) {
+  if (!post) {
     return <div>Loading blog data...</div>;
   }
 
-  const post = data.data;
+  const { trigger: removeTrigger } = useSWRMutation(postCacheKey, removePost);
 
-  const handleDeletePost = () => {
+  const handleDeletePost = async () => {
     const id = post.id;
-    removePost(id);
+    const { error, status } = await removeTrigger(id)
+
     return router.push(`/blog/`);
   };
 
@@ -45,7 +44,8 @@ export default function BlogPost() {
         <Heading>{post.title}</Heading>
         {post?.image && <BlogImageBanner src={post.image} alt={post.title} />}
         <div className={styles.dateContainer}>
-          <time className={styles.date}>{post.createdAt.slice(0,10) + " " + post.createdAt.slice(11,16)}</time>
+          {/* <time className={styles.date}>{post.createdAt.slice(0,10) + " " + post.createdAt.slice(11,16)}</time> */}
+          <time className={styles.date}>{post.createdAt?.slice(0, 10) + " " + post.createdAt?.slice(11, 16)}</time>
           <div className={styles.border} />
         </div>
         <div dangerouslySetInnerHTML={{ __html: post.body }} />
