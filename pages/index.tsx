@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import Heading from "@components/heading";
 import SubHeading from "@components/sub-heading";
 import BlogImageBanner from "@components/blog-image-banner";
@@ -27,16 +27,23 @@ export default function Home() {
 
   const latestPostData = post || {};
 
-  const emailSubstring = email ? email.split('@')[0] : '';
+  const emailSubstring = email ? email.split("@")[0] : "";
 
   return (
     <section>
       <Heading>Latest Blog Post</Heading>
       <SubHeading>{latestPostData.title}</SubHeading>
-      {latestPostData?.image && <BlogImageBanner src={latestPostData.image} alt={latestPostData.title} />}
+      {latestPostData?.image && (
+        <BlogImageBanner
+          src={latestPostData.image}
+          alt={latestPostData.title}
+        />
+      )}
       <div className={styles.dateContainer}>
         <time className={styles.date}>
-          {latestPostData.createdAt?.slice(0, 10) + ' ' + latestPostData.createdAt?.slice(11, 16)}
+          {latestPostData.createdAt?.slice(0, 10) +
+            " " +
+            latestPostData.createdAt?.slice(11, 16)}
         </time>
         <div className={styles.border} />
       </div>
@@ -45,11 +52,6 @@ export default function Home() {
     </section>
   );
 }
-
-
-
-
-
 
 // import React, { useState, useEffect } from 'react';
 // import Heading from "@components/heading";

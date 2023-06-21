@@ -1,23 +1,22 @@
 import { useRouter } from "next/router";
 import styles from "./comments.module.css";
 import Comment from "../comment";
-import { commentCacheKey, getComments } from '@/api-routes/comments'
-import useSWR  from "swr"
+import { commentCacheKey, getComments } from "@/api-routes/comments";
+import useSWR from "swr";
 
 export default function Comments({ postId }) {
   const router = useRouter();
-  const { data : { data: post = []} = {},
-    error,
-  } = useSWR(postId ? `${commentCacheKey}${postId}` : null, () =>
-   getComments(postId) 
-   );
+  const { data: { data: post = [] } = {}, error } = useSWR(
+    postId ? `${commentCacheKey}${postId}` : null,
+    () => getComments(postId)
+  );
 
   if (error || !post) {
-    return <p>Error loading comments</p>
+    return <p>Error loading comments</p>;
   }
 
   if (post.length === 0) {
-    return <p>Be the first to comment:</p>
+    return <p>Be the first to comment:</p>;
   }
 
   return (

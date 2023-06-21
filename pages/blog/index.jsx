@@ -7,8 +7,12 @@ import { getPosts } from "../../api-routes/posts";
 export const cacheKey = "/post";
 
 export default function Blog() {
-  const { data: { data = [] } = {}, error, isLoading } = useSWR(cacheKey, getPosts);
-  
+  const {
+    data: { data = [] } = {},
+    error,
+    isLoading,
+  } = useSWR(cacheKey, getPosts);
+
   if (error) {
     return <div>Error loading blog data</div>;
   }

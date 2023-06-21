@@ -15,18 +15,18 @@ export default function CreatePost() {
     const newPostSlug = createSlug(titleInput);
 
     const newPost = {
-      title:titleInput,
-      body:editorContent,
+      title: titleInput,
+      body: editorContent,
       slug: newPostSlug,
       user_id: user.id,
       image,
-    }
+    };
 
-    const { error, status} = await createTrigger(newPost)
+    const { error, status } = await createTrigger(newPost);
 
-    // addPost({ editorContent, titleInput, image, newPostSlug, user_id: user.id });    
+    // addPost({ editorContent, titleInput, image, newPostSlug, user_id: user.id });
     return router.push(`/blog/${newPostSlug}`);
-  };  
+  };
 
   return (
     <BlogEditor

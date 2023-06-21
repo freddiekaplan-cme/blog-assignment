@@ -12,10 +12,12 @@ import { getPost, removePost } from "../../../api-routes/posts";
 export default function BlogPost() {
   const router = useRouter();
   const { slug } = router.query;
-  const postCacheKey = "/post"
+  const postCacheKey = "/post";
 
-  const {data: { data: post = {} } = {}, error } = useSWR(slug ? `${postCacheKey}${slug}` : null, () =>
-   getPost({ slug }));
+  const { data: { data: post = {} } = {}, error } = useSWR(
+    slug ? `${postCacheKey}${slug}` : null,
+    () => getPost({ slug })
+  );
 
   if (error) {
     return <div>Error loading blog data</div>;
@@ -29,7 +31,7 @@ export default function BlogPost() {
 
   const handleDeletePost = async () => {
     const id = post.id;
-    const { error, status } = await removeTrigger(id)
+    const { error, status } = await removeTrigger(id);
 
     return router.push(`/blog/`);
   };
@@ -45,7 +47,9 @@ export default function BlogPost() {
         {post?.image && <BlogImageBanner src={post.image} alt={post.title} />}
         <div className={styles.dateContainer}>
           {/* <time className={styles.date}>{post.createdAt.slice(0,10) + " " + post.createdAt.slice(11,16)}</time> */}
-          <time className={styles.date}>{post.createdAt?.slice(0, 10) + " " + post.createdAt?.slice(11, 16)}</time>
+          <time className={styles.date}>
+            {post.createdAt?.slice(0, 10) + " " + post.createdAt?.slice(11, 16)}
+          </time>
           <div className={styles.border} />
         </div>
         <div dangerouslySetInnerHTML={{ __html: post.body }} />
