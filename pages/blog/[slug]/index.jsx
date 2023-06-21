@@ -5,9 +5,7 @@ import AddComment from "./partials/add-comment";
 import Button from "@components/button";
 import Heading from "@components/heading";
 import BlogImageBanner from "@components/blog-image-banner";
-
 import useSWR from "swr";
-
 import { getPost, removePost } from "../../../api-routes/posts";
 
 const cacheKey = "blogPost";
