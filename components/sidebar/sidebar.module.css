@@ -7,7 +7,7 @@
 
 @media (min-width: 768px) {
   .container {
-    width: 150px;
+    width: 200px;
     flex-shrink: 0;
     margin-right: 0;
     margin-left: 0;

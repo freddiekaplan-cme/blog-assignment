@@ -1,4 +1,3 @@
-import { useRef } from "react";
 import Button from "@components/button";
 import Input from "@components/input";
 import Label from "@components/label";
@@ -11,28 +10,25 @@ import {
 import useSWRMutation from "swr/mutation";
 
 export default function AddComment({ postId }) {
-  const formRef = useRef(); // create a reference
+  const { slug } = router.query;
 
-  const { trigger: addTrigger } = useSWRMutation(commentCacheKey, addComment);
-
+  let commentAuthor = "";
+  
   const handleOnSubmit = async (event) => {
     event.preventDefault();
-    // Alternative way to get the form data
+    
     const formData = new FormData(event.target);
-
     const { author, comment } = Object.fromEntries(formData);
-
     const newComment = { author, comment, post_id: postId };
-
+    commentAuthor = newComment.author;
+    
     const { error, status } = await addTrigger(newComment);
-
-    /* 
-    Perhaps a good place to add a comment to the database that is associated with the blog post 😙
-    */
-
+    
     formRef.current.reset();
   };
-
+  
+  const { trigger: addTrigger } = useSWRMutation(`${commentCacheKey}${commentAuthor}`, addComment);
+  
   return (
     <div className={styles.container}>
       <h2>Add a comment</h2>

@@ -25,5 +25,5 @@ export async function middleware(req) {
 }
 
 export const config = {
-  matcher: ["/create-post", "/blog/:path*/edit"],
+  matcher: ["/create-post", "/blog/:path*/edit", "/account"]
 };

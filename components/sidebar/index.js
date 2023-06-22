@@ -33,6 +33,10 @@ export default function Navbar() {
       name: "Login",
       requiresAuth: false,
     },
+    "/account": {
+      name: "My Account",
+      requiresAuth: true,
+    },
     "/logout": {
       name: "Logout",
       requiresAuth: true,

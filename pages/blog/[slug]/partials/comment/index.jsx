@@ -1,34 +1,37 @@
-import Button from "@components/button";
-import styles from "./comment.module.css";
-import { removeComment } from "../../../../../api-routes/comments";
-import { commentCacheKey } from "@/api-routes/comments";
-import { useUser } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
 import useSWR from "swr";
+import useSWRMutation from "swr/mutation";
 
+import { useUser } from "@supabase/auth-helpers-react";
+
+import Button from "@components/button";
+import { commentCacheKey } from "@/api-routes/comments";
 import { getPost }  from "../../../../../api-routes/posts";
+import { removeComment } from "../../../../../api-routes/comments";
+import styles from "./comment.module.css";
 
-export default function Comment({ comment, createdAt, author, id, post_id }) {
+export default function Comment({ comment, createdAt, author, id}) {
   const user = useUser();
   const router = useRouter();
-
   const { slug } = router.query;
   const getPostCacheKey = "/post";
-
+  
   const { data: { data: post = {} } = {}, error } = useSWR(
     slug ? `${getPostCacheKey}${slug}` : null,
     () => getPost({ slug })
-  );
+    );
+  
+  const authorIsLoggedIn = (user ? post.user_id === user.id : false);
+  
+  const { trigger: removeCommentTrigger } = useSWRMutation(`${commentCacheKey}${slug}`, removeComment);
 
-  const handleDelete = () => {
-    if (user) {
-      removeComment(commentCacheKey, id);
+  const handleDelete = async () => {
+    if (authorIsLoggedIn) {
+      const { error, status } = await removeCommentTrigger(id);
     } else {
-      router.push("/login");
+      return router.push("/login");
     }
   };
-  
-  const authorIsLoggedIn = post.user_id === user.id;
 
   return (
     <div className={styles.container}>
