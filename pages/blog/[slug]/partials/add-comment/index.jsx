@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import Button from "@components/button";
 import Input from "@components/input";
 import Label from "@components/label";
@@ -10,8 +11,7 @@ import {
 import useSWRMutation from "swr/mutation";
 
 export default function AddComment({ postId }) {
-  const { slug } = router.query;
-
+  const formRef = useRef();
   let commentAuthor = "";
   
   const handleOnSubmit = async (event) => {
