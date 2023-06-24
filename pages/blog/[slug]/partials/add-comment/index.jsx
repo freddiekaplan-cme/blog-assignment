@@ -13,22 +13,25 @@ import useSWRMutation from "swr/mutation";
 export default function AddComment({ postId }) {
   const formRef = useRef();
   let commentAuthor = "";
-  
+
   const handleOnSubmit = async (event) => {
     event.preventDefault();
-    
+
     const formData = new FormData(event.target);
     const { author, comment } = Object.fromEntries(formData);
     const newComment = { author, comment, post_id: postId };
     commentAuthor = newComment.author;
-    
+
     const { error, status } = await addTrigger(newComment);
-    
+
     formRef.current.reset();
   };
-  
-  const { trigger: addTrigger } = useSWRMutation(`${commentCacheKey}${commentAuthor}`, addComment);
-  
+
+  const { trigger: addTrigger } = useSWRMutation(
+    `${commentCacheKey}${commentAuthor}`,
+    addComment
+  );
+
   return (
     <div className={styles.container}>
       <h2>Add a comment</h2>

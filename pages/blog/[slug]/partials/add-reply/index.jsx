@@ -11,29 +11,29 @@ const addReplyCacheKey = "/post/reply";
 
 export default function AddReply({ commentId }) {
   const formRef = useRef();
-  
+
   const handleOnSubmit = async (event) => {
     event.preventDefault();
-  
+
     const formData = new FormData(event.target);
-    const replyAuthor = formData.get('replyAuthor');
-    const reply = formData.get('reply');
+    const replyAuthor = formData.get("replyAuthor");
+    const reply = formData.get("reply");
     const newReply = {
       author: replyAuthor,
       reply: reply,
-      comment_id: commentId
+      comment_id: commentId,
     };
-  
+
     const { error, status } = await addReplyTrigger({ arg: newReply });
-  
+
     formRef.current.reset();
   };
-  
+
   const { trigger: addReplyTrigger } = useSWRMutation(
     addReplyCacheKey,
     addReply
   );
-    
+
   return (
     <div className={styles.container}>
       <h2>Reply to comment</h2>

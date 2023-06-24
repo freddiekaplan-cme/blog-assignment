@@ -6,7 +6,7 @@ import useSWRMutation from "swr/mutation";
 import { useUser } from "@supabase/auth-helpers-react";
 
 import Button from "@components/button";
-import { getPost }  from "../../../../../api-routes/posts";
+import { getPost } from "../../../../../api-routes/posts";
 import { getReplies } from "../../../../../api-routes/commentReplies";
 import { removeComment } from "../../../../../api-routes/comments";
 import { removeReply } from "../../../../../api-routes/commentReplies";
@@ -14,7 +14,7 @@ import styles from "./comment.module.css";
 import { dateCleanUp } from "../../../../../utils/dateCleanUp";
 import AddReply from "../add-reply";
 
-export default function Comment({ comment, created_at, author, id}) {
+export default function Comment({ comment, created_at, author, id }) {
   const user = useUser();
   const router = useRouter();
   const { slug } = router.query;
@@ -27,62 +27,69 @@ export default function Comment({ comment, created_at, author, id}) {
   const getPostCacheKey = "/post";
   const removeCommentCacheKey = "/post/comment";
   const replyCacheKey = "/post/reply";
-  
+
   const { data: { data: post = {} } = {}, error } = useSWR(
     slug ? `${getPostCacheKey}${slug}` : null,
     () => getPost({ slug })
-    );
+  );
 
-    if (error) {
-      return <div>Error loading comments</div>
+  if (error) {
+    return <div>Error loading comments</div>;
+  }
+
+  const authorIsLoggedIn = user ? post.user_id === user.id : false;
+
+  const { trigger: removeCommentTrigger } = useSWRMutation(
+    `${removeCommentCacheKey}${slug}`,
+    removeComment
+  );
+
+  const handleDelete = async () => {
+    if (authorIsLoggedIn) {
+      const { error, status } = await removeCommentTrigger(id);
+    } else {
+      return router.push("/login");
     }
+  };
 
-    const authorIsLoggedIn = (user ? post.user_id === user.id : false);
-    
-    const { trigger: removeCommentTrigger } = useSWRMutation(`${removeCommentCacheKey}${slug}`, removeComment);
-    
-    const handleDelete = async () => {
-      if (authorIsLoggedIn) {
-        const { error, status } = await removeCommentTrigger(id);
-      } else {
-        return router.push("/login");
-      }
-    };
-    
-    const { data: { data: reply = [] } = {}, error: replyError } = useSWR(
-      id ? `${replyCacheKey}/${id}` : null,
-      () => getReplies(id)
-    );
-  
-      if (replyError) {
-        return <div>Error loading comment replies</div>
-      }
+  const { data: { data: reply = [] } = {}, error: replyError } = useSWR(
+    id ? `${replyCacheKey}/${id}` : null,
+    () => getReplies(id)
+  );
 
-    const handleRemoveReply = async (replyId) => {
-      const { data, error } = await removeReplyTrigger(replyId)
-    }
+  if (replyError) {
+    return <div>Error loading comment replies</div>;
+  }
 
-    const { trigger: removeReplyTrigger } = useSWRMutation(
-      `${replyCacheKey}/${id}`,
-      removeReply, {
+  const handleRemoveReply = async (replyId) => {
+    const { data, error } = await removeReplyTrigger(replyId);
+  };
+
+  const { trigger: removeReplyTrigger } = useSWRMutation(
+    `${replyCacheKey}/${id}`,
+    removeReply,
+    {
       onError: (error) => {
-        return <div>Error while attempting to delete reply</div>
-      }
-    })
-  
-    return (
-      <div className={styles.container}>
+        return <div>Error while attempting to delete reply</div>;
+      },
+    }
+  );
+
+  return (
+    <div className={styles.container}>
       <p className={styles.author}>{author}</p>
       <p>{comment}</p>
       <time className={styles.date}>{dateCleanUp(created_at)}</time>
       <div className={styles.buttonContainer}>
-        <Button className={styles.commentButton} type="submit" onClick={toggleReply}>
-            {showReply ? "Cancel" : "Reply"}
+        <Button
+          className={styles.commentButton}
+          type="submit"
+          onClick={toggleReply}
+        >
+          {showReply ? "Cancel" : "Reply"}
         </Button>
-        
-        {authorIsLoggedIn && (
-          <Button onClick={handleDelete}>❌ Comment</Button>
-        )}
+
+        {authorIsLoggedIn && <Button onClick={handleDelete}>❌ Comment</Button>}
       </div>
 
       {showReply && <AddReply commentId={id} />}
@@ -92,15 +99,16 @@ export default function Comment({ comment, created_at, author, id}) {
           <p className={styles.author}>{reply.author}</p>
           <p className={styles.reply}>{reply.reply}</p>
           <time className={styles.date}>{dateCleanUp(reply.created_at)}</time>
-          
+
           {authorIsLoggedIn && (
             <div className={styles.buttonContainer}>
-              <Button onClick={() => handleRemoveReply(reply.id)}>❌ Reply</Button>
+              <Button onClick={() => handleRemoveReply(reply.id)}>
+                ❌ Reply
+              </Button>
             </div>
           )}
         </div>
       ))}
-
     </div>
   );
 }

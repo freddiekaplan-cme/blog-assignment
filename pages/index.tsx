@@ -42,7 +42,7 @@ export default function Home() {
       )}
       <div className={styles.dateContainer}>
         <time className={styles.date}>
-        {dateCleanUp(latestPostData.createdAt)}
+          {dateCleanUp(latestPostData.createdAt)}
         </time>
         <div className={styles.border} />
       </div>
