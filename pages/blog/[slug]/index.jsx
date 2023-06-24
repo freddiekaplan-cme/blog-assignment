@@ -8,6 +8,7 @@ import BlogImageBanner from "@components/blog-image-banner";
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
 import { getPost, removePost } from "../../../api-routes/posts";
+import { dateCleanUp } from "../../../utils/dateCleanUp";
 
 export default function BlogPost() {
   const router = useRouter();
@@ -46,9 +47,8 @@ export default function BlogPost() {
         <Heading>{post.title}</Heading>
         {post?.image && <BlogImageBanner src={post.image} alt={post.title} />}
         <div className={styles.dateContainer}>
-          {/* <time className={styles.date}>{post.createdAt.slice(0,10) + " " + post.createdAt.slice(11,16)}</time> */}
           <time className={styles.date}>
-            {post.createdAt?.slice(0, 10) + " " + post.createdAt?.slice(11, 16)}
+            {dateCleanUp(post.createdAt)}
           </time>
           <div className={styles.border} />
         </div>

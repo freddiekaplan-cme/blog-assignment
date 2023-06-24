@@ -3,6 +3,7 @@ import styles from "./blog.module.css";
 import Heading from "@components/heading";
 import useSWR from "swr";
 import { getPosts } from "../../api-routes/posts";
+import { dateCleanUp } from "../../utils/dateCleanUp"
 
 export const cacheKey = "/post";
 
@@ -33,7 +34,7 @@ export default function Blog() {
           <div className="w-full flex flex-col">
             <p>{post.title}</p>
             <time className={styles.date}>
-              {post.createdAt.slice(0, 10) + " " + post.createdAt.slice(11, 16)}
+              {dateCleanUp(post.createdAt)}
             </time>
           </div>
         </Link>

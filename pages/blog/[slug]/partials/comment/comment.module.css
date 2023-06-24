@@ -9,6 +9,7 @@
 }
 
 .date {
+  color: #71717a;
   font-family: monospace;
 }
 
@@ -17,3 +18,8 @@
   margin-top: 10px;
   gap: 5px;
 }
+
+.replyContainer {
+  padding: 10px 10px 10px 30px;
+}
+
