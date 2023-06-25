@@ -55,6 +55,17 @@ export const latestPost = async () => {
   }
 };
 
+export const searchPosts = async (_, { arg: search }) => {
+  const searchText = search.arg;
+
+  const { data, error, status } = await supabase
+    .from("blog-data")
+    .select("*")
+    .textSearch(["title", "body"], searchText);
+
+  return { error, status, data };
+};
+
 export const addPost = async (_, { arg: newPost }) => {
   let image = "";
 

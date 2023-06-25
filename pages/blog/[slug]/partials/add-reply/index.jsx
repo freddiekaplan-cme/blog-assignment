@@ -48,7 +48,7 @@ export default function AddReply({ commentId }) {
           <TextArea id="reply" name="reply" />
         </div>
 
-        <Button className={styles.addCommentButton} type="submit">
+        <Button className={styles.addReplyButton} type="submit">
           Submit
         </Button>
       </form>

@@ -19,11 +19,14 @@ export default function Navbar() {
     "/": {
       name: "Home",
     },
+    "/blog": {
+      name: "Blog",
+    },
     "/about": {
       name: "About",
     },
-    "/blog": {
-      name: "Blog",
+    "/search": {
+      name: "Search",
     },
     "/create-post": {
       name: "Create post",
