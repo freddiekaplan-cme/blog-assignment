@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { dateCleanUp } from "../../utils/dateCleanUp";
-
 import { useRef, useState } from "react";
 import Heading from "@components/heading";
 import Button from "@components/button";
