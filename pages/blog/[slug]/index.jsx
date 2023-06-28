@@ -57,9 +57,10 @@ export default function BlogPost() {
     router.push(`/blog/${slug}/edit`);
   };
 
-  const authorFromEmail = userData.name != null
-    ? userData.name
-    : getAuthorFromEmail(userData.email);
+  const userName =
+    userData.name != null ? userData.name : getAuthorFromEmail(userData.email);
+
+  const userInfo = userData.info != null ? userData.info : "";
 
   const authorIsLoggedIn = user ? post.user_id === user.id : false;
 
@@ -73,7 +74,8 @@ export default function BlogPost() {
           <div className={styles.border} />
         </div>
         <div dangerouslySetInnerHTML={{ __html: post.body }} />
-        <span className={styles.author}>Author: {authorFromEmail}</span>
+        <span className={styles.author}>Author: {userName}</span>
+        <span className={styles.info}>{userInfo}</span>
 
         {authorIsLoggedIn && (
           <div className={styles.buttonContainer}>

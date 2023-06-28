@@ -41,3 +41,20 @@
   display: flex;
   gap: 5px;
 }
+
+.form {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.updateButton {
+  margin-top: 10px;
+  padding: 10px 10px !important;
+}
+
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}

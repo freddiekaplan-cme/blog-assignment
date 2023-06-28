@@ -121,7 +121,7 @@ export const editPost = async (_, { arg: updatedPost }) => {
     .from("blog-data")
     .update({ ...updatedPost, image })
     .eq("id", updatedPost.id)
-    .select()
+    .select("*")
     .single();
 
   if (error) {
