@@ -15,7 +15,6 @@ const userCacheKey = "/account";
 export default function Account() {
   const supabaseClient = useSupabaseClient();
   const user = useUser();
-
   const id = user?.id;
 
   const { data: { data = {} } = {}, error } = useSWR(
@@ -32,7 +31,7 @@ export default function Account() {
   }
 
   const { data: { data: post = [] } = {}, error: postError } = useSWR(
-    cacheKey,
+    id ? `${cacheKey}${id}` : null,
     () => userPosts(id)
   );
 

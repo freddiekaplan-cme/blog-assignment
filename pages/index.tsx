@@ -11,6 +11,7 @@ import { getAuthorFromEmail } from "../utils/getAuthorFromEmail";
 
 interface PostData {
   post?: any;
+  name?: string;
   email?: string;
 }
 
@@ -25,11 +26,11 @@ export default function Home() {
     return <div>Loading blog data...</div>;
   }
 
-  const { post, email }: PostData = data.data || {};
+  const { post, email, name }: PostData = data.data || {};
 
   const latestPostData = post || {};
 
-  const authorFromEmail = getAuthorFromEmail(email);
+  const authorFromEmail = name ? name : getAuthorFromEmail(email);
 
   return (
     <section>

@@ -25,7 +25,7 @@ export default function AddReply({ commentId, onClose }) {
     };
 
     const { error, status } = await addReplyTrigger({ arg: newReply });
-    
+
     formRef.current.reset();
     onClose();
   };
