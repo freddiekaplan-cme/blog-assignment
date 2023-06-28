@@ -54,4 +54,4 @@ export default function AddReply({ commentId }) {
       </form>
     </div>
   );
-};
+}

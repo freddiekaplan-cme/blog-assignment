@@ -66,6 +66,17 @@ export const searchPosts = async (_, { arg: search }) => {
   return { error, status, data };
 };
 
+export const userPosts = async (id) => {
+  const { data, error, status } = await supabase
+    .from("blog-data")
+    .select("*")
+    .eq("user_id", id);
+
+  console.log(data);
+
+  return { error, status, data };
+};
+
 export const addPost = async (_, { arg: newPost }) => {
   let image = "";
 
