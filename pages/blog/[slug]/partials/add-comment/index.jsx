@@ -28,7 +28,7 @@ export default function AddComment({ postId }) {
   };
 
   const { trigger: addTrigger } = useSWRMutation(
-    `${commentCacheKey}${commentAuthor}`,
+    postId ? `${commentCacheKey}${postId}` : null,
     addComment
   );
 

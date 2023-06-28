@@ -9,6 +9,7 @@ import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
 import { getPost, removePost } from "../../../api-routes/posts";
 import { dateCleanUp } from "../../../utils/dateCleanUp";
+import { getAuthorFromEmail } from "../../../utils/getAuthorFromEmail";
 
 export default function BlogPost() {
   const router = useRouter();
@@ -41,6 +42,11 @@ export default function BlogPost() {
     router.push(`/blog/${slug}/edit`);
   };
 
+  const authorFromEmail = getAuthorFromEmail(post.author);
+
+  console.log(post.author);
+  console.log(authorFromEmail);
+
   return (
     <>
       <section className={styles.container}>
@@ -51,9 +57,8 @@ export default function BlogPost() {
           <div className={styles.border} />
         </div>
         <div dangerouslySetInnerHTML={{ __html: post.body }} />
-        <span className={styles.author}>Author: {post.author}</span>
+        <span className={styles.author}>Author: {authorFromEmail}</span>
 
-        {/* The Delete & Edit part should only be showed if you are authenticated and you are the author */}
         <div className={styles.buttonContainer}>
           <Button onClick={handleDeletePost}>Delete</Button>
           <Button onClick={handleEditPost}>Edit</Button>
@@ -62,7 +67,6 @@ export default function BlogPost() {
 
       <Comments postId={post.id} />
 
-      {/* This component should only be displayed if a user is authenticated */}
       <AddComment postId={post.id} />
     </>
   );

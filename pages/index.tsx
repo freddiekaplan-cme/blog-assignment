@@ -7,6 +7,7 @@ import useSWR from "swr";
 import { latestPost } from "../api-routes/posts";
 import { cacheKey } from "../pages/blog";
 import { dateCleanUp } from "../utils/dateCleanUp";
+import { getAuthorFromEmail } from "../utils/getAuthorFromEmail";
 
 interface PostData {
   post?: any;
@@ -28,7 +29,7 @@ export default function Home() {
 
   const latestPostData = post || {};
 
-  const emailSubstring = email ? email.split("@")[0] : "";
+  const authorFromEmail = getAuthorFromEmail(email);
 
   return (
     <section>
@@ -47,7 +48,7 @@ export default function Home() {
         <div className={styles.border} />
       </div>
       <div dangerouslySetInnerHTML={{ __html: latestPostData.body }} />
-      <p className={styles.author}>Author: {emailSubstring}</p>
+      <p className={styles.author}>Author: {authorFromEmail}</p>
     </section>
   );
 }

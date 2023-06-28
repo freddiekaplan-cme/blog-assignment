@@ -24,7 +24,6 @@ export default function CreatePost() {
 
     const { error, status } = await createTrigger(newPost);
 
-    // addPost({ editorContent, titleInput, image, newPostSlug, user_id: user.id });
     return router.push(`/blog/${newPostSlug}`);
   };
 

@@ -13,6 +13,8 @@ import { removeReply } from "../../../../../api-routes/commentReplies";
 import styles from "./comment.module.css";
 import { dateCleanUp } from "../../../../../utils/dateCleanUp";
 import AddReply from "../add-reply";
+import { replyCacheKey } from "../../partials/add-reply/index";
+import { commentCacheKey } from "../../../../../api-routes/comments";
 
 export default function Comment({ comment, created_at, author, id }) {
   const user = useUser();
@@ -25,8 +27,6 @@ export default function Comment({ comment, created_at, author, id }) {
   };
 
   const getPostCacheKey = "/post";
-  const removeCommentCacheKey = "/post/comment";
-  const replyCacheKey = "/post/reply";
 
   const { data: { data: post = {} } = {}, error } = useSWR(
     slug ? `${getPostCacheKey}${slug}` : null,
@@ -39,8 +39,10 @@ export default function Comment({ comment, created_at, author, id }) {
 
   const authorIsLoggedIn = user ? post.user_id === user.id : false;
 
+  const postId = post.id;
+
   const { trigger: removeCommentTrigger } = useSWRMutation(
-    `${removeCommentCacheKey}${slug}`,
+    postId ? `${commentCacheKey}${postId}` : null,
     removeComment
   );
 
@@ -53,7 +55,7 @@ export default function Comment({ comment, created_at, author, id }) {
   };
 
   const { data: { data: reply = [] } = {}, error: replyError } = useSWR(
-    id ? `${replyCacheKey}/${id}` : null,
+    id ? `${replyCacheKey}${id}` : null,
     () => getReplies(id)
   );
 
@@ -66,7 +68,7 @@ export default function Comment({ comment, created_at, author, id }) {
   };
 
   const { trigger: removeReplyTrigger } = useSWRMutation(
-    `${replyCacheKey}/${id}`,
+    id ? `${replyCacheKey}${id}` : null,
     removeReply,
     {
       onError: (error) => {

@@ -28,10 +28,10 @@ export default function Search() {
     setSearchResults(data || []);
 
     if (error) {
-		console.log(error);
-		console.log(error.message);
-		errorMessage = "Error loading search results. " + error.message;
-	}
+      console.log(error);
+      console.log(error.message);
+      errorMessage = "Error loading search results. " + error.message;
+    }
 
     formRef.current.reset();
   };
@@ -59,11 +59,11 @@ export default function Search() {
       <section>
         <SubHeading>Search Results</SubHeading>
         {searchResults.map((post) => (
-			<Link
+          <Link
             key={post.slug}
             className={styles.link}
             href={`/blog/${post.slug}`}
-			>
+          >
             <div className="w-full flex flex-col">
               <p>{post.title}</p>
               <time className={styles.date}>{dateCleanUp(post.createdAt)}</time>
@@ -71,7 +71,7 @@ export default function Search() {
           </Link>
         ))}
       </section>
-		<p>{errorMessage}</p>
+      <p>{errorMessage}</p>
     </div>
   );
 }

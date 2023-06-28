@@ -7,7 +7,7 @@ import styles from "./add-reply.module.css";
 import useSWRMutation from "swr/mutation";
 import { addReply } from "../../../../../api-routes/commentReplies";
 
-const addReplyCacheKey = "/post/reply";
+export const replyCacheKey = "/post/reply";
 
 export default function AddReply({ commentId }) {
   const formRef = useRef();
@@ -30,7 +30,7 @@ export default function AddReply({ commentId }) {
   };
 
   const { trigger: addReplyTrigger } = useSWRMutation(
-    addReplyCacheKey,
+    commentId ? `${replyCacheKey}${commentId}` : null,
     addReply
   );
 
