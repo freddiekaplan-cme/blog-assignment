@@ -9,7 +9,7 @@ import { addReply } from "../../../../../api-routes/commentReplies";
 
 export const replyCacheKey = "/post/reply";
 
-export default function AddReply({ commentId }) {
+export default function AddReply({ commentId, onClose }) {
   const formRef = useRef();
 
   const handleOnSubmit = async (event) => {
@@ -25,8 +25,9 @@ export default function AddReply({ commentId }) {
     };
 
     const { error, status } = await addReplyTrigger({ arg: newReply });
-
+    
     formRef.current.reset();
+    onClose();
   };
 
   const { trigger: addReplyTrigger } = useSWRMutation(

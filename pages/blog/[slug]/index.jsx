@@ -10,8 +10,10 @@ import useSWRMutation from "swr/mutation";
 import { getPost, removePost } from "../../../api-routes/posts";
 import { dateCleanUp } from "../../../utils/dateCleanUp";
 import { getAuthorFromEmail } from "../../../utils/getAuthorFromEmail";
+import { useUser } from "@supabase/auth-helpers-react";
 
 export default function BlogPost() {
+  const user = useUser();
   const router = useRouter();
   const { slug } = router.query;
   const postCacheKey = "/post";
@@ -44,8 +46,7 @@ export default function BlogPost() {
 
   const authorFromEmail = getAuthorFromEmail(post.author);
 
-  console.log(post.author);
-  console.log(authorFromEmail);
+  const authorIsLoggedIn = user ? post.user_id === user.id : false;
 
   return (
     <>
@@ -59,10 +60,10 @@ export default function BlogPost() {
         <div dangerouslySetInnerHTML={{ __html: post.body }} />
         <span className={styles.author}>Author: {authorFromEmail}</span>
 
-        <div className={styles.buttonContainer}>
+        {authorIsLoggedIn && <div className={styles.buttonContainer} >
           <Button onClick={handleDeletePost}>Delete</Button>
           <Button onClick={handleEditPost}>Edit</Button>
-        </div>
+        </div>}
       </section>
 
       <Comments postId={post.id} />

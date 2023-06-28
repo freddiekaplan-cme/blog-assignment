@@ -26,6 +26,10 @@ export default function Comment({ comment, created_at, author, id }) {
     setShowReply(!showReply);
   };
 
+  const closeReplyInputs = () => {
+    setShowReply(false);
+  };
+
   const getPostCacheKey = "/post";
 
   const { data: { data: post = {} } = {}, error } = useSWR(
@@ -94,7 +98,7 @@ export default function Comment({ comment, created_at, author, id }) {
         {authorIsLoggedIn && <Button onClick={handleDelete}>❌ Comment</Button>}
       </div>
 
-      {showReply && <AddReply commentId={id} />}
+      {showReply && <AddReply commentId={id} onClose={closeReplyInputs} />}
 
       {reply.map((reply) => (
         <div key={reply.id} className={styles.replyContainer}>

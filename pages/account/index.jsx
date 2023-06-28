@@ -18,8 +18,6 @@ export default function Account() {
 
   const id = user?.id;
 
-  console.log(id);
-
   const { data: { data = {} } = {}, error } = useSWR(
     id ? `${userCacheKey}${id}` : null,
     () => getUser(id)
@@ -37,8 +35,6 @@ export default function Account() {
     cacheKey,
     () => userPosts(id)
   );
-
-  console.log(post);
 
   if (postError) {
     return <div>Error loading user posts: {postError.message}</div>;

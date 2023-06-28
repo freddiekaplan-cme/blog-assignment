@@ -72,8 +72,6 @@ export const userPosts = async (id) => {
     .select("*")
     .eq("user_id", id);
 
-  console.log(data);
-
   return { error, status, data };
 };
 
