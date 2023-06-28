@@ -3,7 +3,7 @@ import styles from "./account.module.css";
 import { getUser } from "../../api-routes/user";
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
 import useSWR from "swr";
-import { getAuthorFromEmail } from "../../utils/getAuthorFromEmail"
+import { getAuthorFromEmail } from "../../utils/getAuthorFromEmail";
 
 const userCacheKey = "/account";
 
@@ -17,7 +17,7 @@ export default function Account() {
     id ? `${userCacheKey}${id}` : null,
     () => getUser(id)
   );
-  
+
   if (error) {
     return <div>Error loading user data: {error.message}</div>;
   }
@@ -26,7 +26,8 @@ export default function Account() {
     return <div>Loading user data...</div>;
   }
 
-const userName = data.name != null ? data.name : getAuthorFromEmail(data.email)
+  const userName =
+    data.name != null ? data.name : getAuthorFromEmail(data.email);
 
   return (
     <div className={styles.container}>
