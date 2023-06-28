@@ -10,7 +10,7 @@ import { cacheKey } from "../blog/index";
 import { userPosts } from "../../api-routes/posts";
 import Link from "next/link";
 
-const userCacheKey = "/account";
+export const userCacheKey = "/account";
 
 export default function Account() {
   const supabaseClient = useSupabaseClient();
@@ -47,6 +47,8 @@ export default function Account() {
       <Heading>My Account</Heading>
       <p>Email: {data.email}</p>
       <p>Username: {userName}</p>
+      {/* <Button onClick={handleShowUpdateForm}>Update Username</Button> */}
+
 
       <div>
         <SubHeading>Posts</SubHeading>

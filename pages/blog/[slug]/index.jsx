@@ -10,6 +10,8 @@ import useSWRMutation from "swr/mutation";
 import { getPost, removePost } from "../../../api-routes/posts";
 import { dateCleanUp } from "../../../utils/dateCleanUp";
 import { getAuthorFromEmail } from "../../../utils/getAuthorFromEmail";
+import { getUser } from "../../../api-routes/user";
+import { userCacheKey } from "../../account";
 import { useUser } from "@supabase/auth-helpers-react";
 
 export default function BlogPost() {
@@ -24,7 +26,7 @@ export default function BlogPost() {
   );
 
   if (error) {
-    return <div>Error loading blog data</div>;
+    return <div>Error loading blog data: {error.message}</div>;
   }
 
   if (!post) {
@@ -32,6 +34,17 @@ export default function BlogPost() {
   }
 
   const { trigger: removeTrigger } = useSWRMutation(postCacheKey, removePost);
+
+  const postUserId = post.user_id;
+
+  const { data: { data: userData = {} } = {}, error: userError } = useSWR(
+    postUserId ? `${userCacheKey}${postUserId}` : null,
+    () => getUser(postUserId)
+  );
+
+  if (userError) {
+    return <div>Error loading user data: {userError.message}</div>;
+  }
 
   const handleDeletePost = async () => {
     const id = post.id;
@@ -44,9 +57,9 @@ export default function BlogPost() {
     router.push(`/blog/${slug}/edit`);
   };
 
-  const authorFromEmail = user.name
-    ? user.name
-    : getAuthorFromEmail(user.email);
+  const authorFromEmail = userData.name != null
+    ? userData.name
+    : getAuthorFromEmail(userData.email);
 
   const authorIsLoggedIn = user ? post.user_id === user.id : false;
 
