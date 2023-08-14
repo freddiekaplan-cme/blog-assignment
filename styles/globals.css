@@ -2,6 +2,7 @@
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+  background-color: rgb(175, 231, 212);
 }
 
 p {
@@ -9,7 +10,7 @@ p {
 }
 
 code {
-  background-color: rgba(97, 97, 97, 0.1);
+  background-color: rgba(122, 243, 160, 0.1);
   color: #616161;
 }
 
